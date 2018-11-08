@@ -1,12 +1,9 @@
 create sequence hibernate_sequence start 1 increment 1;
 
-create table message (
+create table testing (
     id int8 not null,
-    filename varchar(255),
-    address_org varchar(255),
-    inn varchar(255),
-    name_org varchar(255),
-    ogrnn varchar(255),
+    question varchar(255),
+    answer boolean,
     user_id int8,
     primary key (id)
 );
@@ -20,14 +17,13 @@ create table usr (
     id int8 not null,
     activation_code varchar(255),
     active boolean not null,
-    email varchar(255),
     password varchar(255) not null,
     username varchar(255) not null,
     primary key (id)
 );
 
-alter table if exists message
-    add constraint message_user_fk
+alter table if exists testing
+    add constraint testing_user_fk
     foreign key (user_id) references usr;
 
 alter table if exists user_role

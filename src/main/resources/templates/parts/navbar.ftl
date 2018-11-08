@@ -11,14 +11,16 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
+            <#if user??>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/main">Messages</a>
+                <a class="nav-link" href="/main">Testing</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/user-messages/${currentUserId}">My messages</a>
+                <a class="nav-link" href="/user-testing/${currentUserId}">My tests</a>
             </li>
+            </#if>
 
             <#if isAdmin>
             <li class="nav-item">

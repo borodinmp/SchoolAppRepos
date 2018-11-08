@@ -1,47 +1,31 @@
 package home.service;
 
-import home.domain.Message;
-import home.repos.MessageRepo;
+import home.domain.Testing;
+import home.repos.TestingRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FindService {
 
-    private Iterable<Message> messages;
+    private Iterable<Testing> testings;
 
     @Autowired
-    private MessageRepo messageRepo;
+    private TestingRepo testingRepo;
 
     public Iterable find (String filter, String selectFilter) {
 
-        if(filter != null & !filter.isEmpty() & selectFilter.equals("1")) {
-            messages = messageRepo.
-                    findByNameOrgLikeOrInnLikeOrOgrnnLikeOrAddressOrgLike(filter, filter, filter, filter);
+        if(filter != null & !filter.isEmpty() & selectFilter.equals("2")) {
+            testings = testingRepo.
+                    findByQuestion(filter);
 
-        } else if(filter != null & !filter.isEmpty() & selectFilter.equals("2")) {
-            messages = messageRepo.
-                    findByNameOrg(filter);
+        } else testings = testingRepo.findAll();
 
-        } else if(filter != null & !filter.isEmpty() & selectFilter.equals("3")) {
-            messages = messageRepo.
-                    findByInn(filter);
-
-        } else if(filter != null & !filter.isEmpty() & selectFilter.equals("4")) {
-            messages = messageRepo.
-                    findByOgrnn(filter);
-
-        } else if(filter != null & !filter.isEmpty() & selectFilter.equals("5")) {
-            messages = messageRepo.
-                    findByAddressOrg(filter);
-
-        } else messages = messageRepo.findAll();
-
-        return messages;
+        return testings;
     }
 
-    public Iterable<Message> getMessages() {
-        return messages;
+    public Iterable<Testing> getTestings() {
+        return testings;
     }
 
 }

@@ -4,9 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -18,9 +18,6 @@ public class User implements UserDetails {
     private Long id;
     @NotBlank(message = "Please fill the text")
     private String username;
-
-    @Email
-    private String email;
 
     @NotBlank(message = "Please fill the text")
     private String password;
@@ -35,7 +32,20 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set <Message> messages;
+    private Set <Testing> testings;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     public boolean isAdmin(){
         return roles.contains(Role.ADMIN);
@@ -107,15 +117,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getActivationCode() {
         return activationCode;
     }
@@ -124,11 +125,11 @@ public class User implements UserDetails {
         this.activationCode = activationCode;
     }
 
-    public Set<Message> getMessages() {
-        return messages;
+    public Set<Testing> getTestings() {
+        return testings;
     }
 
-    public void setMessages(Set<Message> messages) {
-        this.messages = messages;
+    public void setTestings(Set<Testing> testings) {
+        this.testings = testings;
     }
 }

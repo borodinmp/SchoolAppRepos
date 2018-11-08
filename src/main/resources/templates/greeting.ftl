@@ -3,6 +3,6 @@
 
 <@c.page>
 <H5>Hello, ${name}</H5>
-<div>This is a web resource for organizations</div>
+<div>This is a web resource for school</div>
 
 </@c.page>
