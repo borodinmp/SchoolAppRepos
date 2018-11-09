@@ -16,8 +16,8 @@
             <td>${testing.id}</td>
             <td>${testing.question}</td>
             <td>
-                <input type="radio" name="myParam[${testing.id}]" value="1">Да
-                <input type="radio" name="myParam[${testing.id}]" value="2">Нет
+                <input type="radio" name="rbutton" value="1">Да
+                <input type="radio" name="rbutton" value="2">Нет
             </td>
         </tr>
         </tbody>

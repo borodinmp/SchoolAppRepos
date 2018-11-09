@@ -1,7 +1,9 @@
 package home.controller;
 
+import home.domain.TestResult;
 import home.domain.Testing;
 import home.domain.User;
+import home.repos.TestResultgRepo;
 import home.repos.TestingRepo;
 import home.service.FindService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,8 +56,9 @@ import java.util.Set;
         @PostMapping("text")
         public String add(
                 @AuthenticationPrincipal User user,
-                /*@Valid */@RequestParam(required = false) Testing testing,
-                @RequestParam(value="myParam[]") String[] myParams,
+                @Valid Testing testing,
+                @Valid TestResult testResult,
+                @RequestParam(value="rbutton") String rbutton,
                 BindingResult bindingResult,
                 Model model
                 ){
@@ -67,15 +69,12 @@ import java.util.Set;
                 model.mergeAttributes(errorsMap);
                 model.addAttribute("testing", testing);
             } else {*/
-                for (int i=0; i<myParams.length; i++) {
-
-                    if (myParams[i].equals("1")){
-                        testing.setAnswer(true);
+                    if (rbutton.equals("1")){
+                        testResult.setAnswer(true);
                     }
-                    else if (myParams[i].equals("2")){
-                        testing.setAnswer(false);
+                    else if (rbutton.equals("2")){
+                        testResult.setAnswer(false);
                     }
-                }
                 model.addAttribute("testing" , null);
                 testingRepo.save(testing);
             /*}*/
@@ -85,7 +84,6 @@ import java.util.Set;
 
             return "main";
         }
-
 
     @GetMapping("/user-testing/{user}")
         public String userTestings(
