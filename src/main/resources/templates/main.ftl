@@ -13,11 +13,6 @@
         </form>
     </div>
 </div>
-<div>
-<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Add new test
-</a>
-<div class="collapse <#if testing??>show</#if> mt-3" id="collapseExample"
      <div class="form-group">
          <form method="post" action="text" enctype="multipart/form-data">
              <input type="hidden" name="_csrf" value="${_csrf.token}"/>
@@ -38,8 +33,6 @@
              <button class="btn btn-primary mt-3" type="submit">Отправить</button>
          </form>
      </div>
-</div>
-    </div>
 
 <br>
 

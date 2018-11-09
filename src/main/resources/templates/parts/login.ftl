@@ -36,16 +36,6 @@
             </div>
         </div>
     <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Email:</label>
-            <div class="col-sm-6">
-                <input type="email" name="email" value= "<#if email??>${user.email}</#if>"
-                       class="form-control ${(emailError??)?string('is-invalid', '')}" placeholder="some@some.com"/>
-                <#if emailError??>
-                      <div class="invalid-feedback">
-                          ${emailError}
-                      </div>
-                </#if>
-            </div>
     </div>
     <div>
         <div class="g-recaptcha" data-sitekey="6LcbgnUUAAAAADuyB1UMF6ACNIBAb5YBjYxApedj"></div>
@@ -65,6 +55,6 @@
 <#macro logout>
     <form action="/logout" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <button class="btn btn-primary" type="submit">Sign Out</button>
+        <button class="btn btn-primary" type="submit"><#if Session.SPRING_SECURITY_CONTEXT??>Sign Out<#else>Sign In</#if></button>
     </form>
 </#macro>

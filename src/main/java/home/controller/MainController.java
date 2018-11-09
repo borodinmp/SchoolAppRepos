@@ -12,14 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -59,38 +55,32 @@ import java.util.Set;
         @PostMapping("text")
         public String add(
                 @AuthenticationPrincipal User user,
-                @Valid Testing testing,
-                @RequestParam("rbutton") String rbutton,
+                /*@Valid */@RequestParam(required = false) Testing testing,
+                @RequestParam(value="myParam[]") String[] myParams,
                 BindingResult bindingResult,
-                Model model,
-                Map<String,String> isElse){
+                Model model
+                ){
             testing.setAuthor(user);
 
-
-            if(bindingResult.hasErrors()) {
+/*            if(bindingResult.hasErrors()) {
                 Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
                 model.mergeAttributes(errorsMap);
                 model.addAttribute("testing", testing);
-                if (rbutton=="1"){
-                    testing.setAnswer(true);
-                }
-                if (rbutton=="2"){
-                    testing.setAnswer(false);
-                }
-            } else {
-                if (rbutton=="1"){
-                    testing.setAnswer(true);
-                }
-                if (rbutton=="2"){
-                    testing.setAnswer(false);
-                }
+            } else {*/
+                for (int i=0; i<myParams.length; i++) {
 
+                    if (myParams[i].equals("1")){
+                        testing.setAnswer(true);
+                    }
+                    else if (myParams[i].equals("2")){
+                        testing.setAnswer(false);
+                    }
+                }
                 model.addAttribute("testing" , null);
                 testingRepo.save(testing);
-            }
+            /*}*/
 
             Iterable<Testing> testings = testingRepo.findAll();
-
             model.addAttribute("testings", testings);
 
             return "main";
@@ -119,16 +109,17 @@ import java.util.Set;
                 @RequestParam("id") Testing testing,
                 @RequestParam("question") String question,
                 @RequestParam("rbutton") String rbutton){
+
             if (testing.getAuthor().equals(currentUser)) {
                 if (!StringUtils.isEmpty(question)) {
                     testing.setQuestion(question);
                 }
 
                 if (!StringUtils.isEmpty(rbutton)) {
-                    if (rbutton=="1"){
+                    if (rbutton.equals(1)){
                         testing.setAnswer(true);
                     }
-                    if (rbutton=="2"){
+                    else if (rbutton.equals(2)){
                         testing.setAnswer(false);
                     }
                 }
