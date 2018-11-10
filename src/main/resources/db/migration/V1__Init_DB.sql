@@ -4,7 +4,6 @@ create sequence hibernate_sequence start 1 increment 1;
 create table testing (
     id int8 not null,
     question varchar(255),
-    answer boolean,
     user_id int8,
     primary key (id)
 );
@@ -12,6 +11,8 @@ create table testing (
 create table test_result (
     id int8 not null,
     answer boolean,
+    user_id int8,
+    question_id int8,
     primary key (id)
 );
 

@@ -1,10 +1,9 @@
 package home.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class TestResult {
@@ -12,7 +11,22 @@ public class TestResult {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private Long questionId;
+
     private boolean answer;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "question_answer",
+            joinColumns = {@JoinColumn(name = "testing_id")},
+            inverseJoinColumns = {@JoinColumn(name = "test_result_id")}
+    )
+    private Set<TestResult> testResultSet;
 
     public TestResult(){
 
@@ -35,6 +49,34 @@ public class TestResult {
 
     public void setAnswer(boolean answer) {
         this.answer = answer;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public String getAuthorName() {
+        return author != null ? author.getUsername() : "<none>";
+    }
+
+    public Long getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Long questionId) {
+        this.questionId = questionId;
+    }
+
+    public Set<TestResult> getTestResultSet() {
+        return testResultSet;
+    }
+
+    public void setTestResultSet(Set<TestResult> testResultSet) {
+        this.testResultSet = testResultSet;
     }
 }
 

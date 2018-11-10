@@ -32,7 +32,7 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set <Testing> testings;
+    private Set <TestResult> testResults;
 
     @Override
     public boolean equals(Object o) {
@@ -125,11 +125,11 @@ public class User implements UserDetails {
         this.activationCode = activationCode;
     }
 
-    public Set<Testing> getTestings() {
-        return testings;
+    public Set<TestResult> getTestResults() {
+        return testResults;
     }
 
-    public void setTestings(Set<Testing> testings) {
-        this.testings = testings;
+    public void setTestResults(Set<TestResult> testResults) {
+        this.testResults = testResults;
     }
 }

@@ -1,7 +1,7 @@
 <#import "parts/common.ftl" as c>
     <@c.page>
 
-<div class="form-row">
+<#--<div class="form-row">
     <div class="form-group col-md-6">
         <form method="get" action="/main" class="form-inline">
             <select name="selectFilter" class="form-control ml-2" value="${selectFilter?ifExists}">
@@ -32,7 +32,7 @@
 
              <button class="btn btn-primary mt-3" type="submit">Отправить</button>
          </form>
-     </div>
+     </div>-->
 
 <br>
 

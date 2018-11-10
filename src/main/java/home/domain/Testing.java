@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Testing {
@@ -15,22 +17,19 @@ public class Testing {
     @Length(max = 255, message = "Text is to long")
     private String question;
 
-    private boolean answer;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User author;
+    @ManyToMany
+    @JoinTable(
+            name = "question_answer",
+            joinColumns = {@JoinColumn(name = "test_result_id")},
+            inverseJoinColumns = {@JoinColumn(name = "testing_id")}
+    )
+    private Set<Testing> testingSet;
 
     public Testing() {
     }
 
-    public Testing(String question, boolean answer) {
+    public Testing(String question) {
         this.question = question;
-        this.answer = answer;
-    }
-
-    public String getAuthorName() {
-        return author != null ? author.getUsername() : "<none>";
     }
 
     public Long getId() {
@@ -49,19 +48,4 @@ public class Testing {
         this.question = question;
     }
 
-    public boolean isAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(boolean answer) {
-        this.answer = answer;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
 }

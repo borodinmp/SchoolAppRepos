@@ -3,7 +3,7 @@ package home.controller;
 import home.domain.TestResult;
 import home.domain.Testing;
 import home.domain.User;
-import home.repos.TestResultgRepo;
+import home.repos.TestResultRepo;
 import home.repos.TestingRepo;
 import home.service.FindService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,13 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-    public class MainController {
+public class MainController {
 
         @Autowired
         FindService findService;
 
+        @Autowired
+        private TestResultRepo testResultRepo;
 
         @Autowired
         private TestingRepo testingRepo;
@@ -56,13 +58,12 @@ import java.util.Set;
         @PostMapping("text")
         public String add(
                 @AuthenticationPrincipal User user,
-                @Valid Testing testing,
                 @Valid TestResult testResult,
                 @RequestParam(value="rbutton") String rbutton,
                 BindingResult bindingResult,
                 Model model
                 ){
-            testing.setAuthor(user);
+                testResult.setAuthor(user);
 
 /*            if(bindingResult.hasErrors()) {
                 Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
@@ -75,12 +76,15 @@ import java.util.Set;
                     else if (rbutton.equals("2")){
                         testResult.setAnswer(false);
                     }
-                model.addAttribute("testing" , null);
-                testingRepo.save(testing);
+                model.addAttribute("testResult" , null);
+            testResultRepo.save(testResult);
             /*}*/
 
             Iterable<Testing> testings = testingRepo.findAll();
             model.addAttribute("testings", testings);
+
+            Iterable<TestResult> testResults = testResultRepo.findAll();
+            model.addAttribute("testResults", testResults);
 
             return "main";
         }
@@ -91,9 +95,9 @@ import java.util.Set;
                 @PathVariable User user,
                 @RequestParam(required = false) Testing testing,
                 Model model){
-            Set<Testing> testings = user.getTestings();
+            /*Set<Testing> testings = user.getTestings();*/
 
-            model.addAttribute("testings", testings);
+            /*model.addAttribute("testings", testings);*/
             model.addAttribute("testing", testing);
             model.addAttribute("isCurrentUser", currentUser.equals(user));
 
@@ -108,22 +112,22 @@ import java.util.Set;
                 @RequestParam("question") String question,
                 @RequestParam("rbutton") String rbutton){
 
-            if (testing.getAuthor().equals(currentUser)) {
+/*            if (testing.getAuthor().equals(currentUser)) {
                 if (!StringUtils.isEmpty(question)) {
                     testing.setQuestion(question);
-                }
+                }*/
 
-                if (!StringUtils.isEmpty(rbutton)) {
+/*                if (!StringUtils.isEmpty(rbutton)) {
                     if (rbutton.equals(1)){
-                        testing.setAnswer(true);
+                        testResult.setAnswer(true);
                     }
                     else if (rbutton.equals(2)){
-                        testing.setAnswer(false);
+                        testResult.setAnswer(false);
                     }
-                }
+                }*/
 
                 testingRepo.save(testing);
-            }
+           /* }*/
 
             return "redirect:/user-testing/" + user;
         }

@@ -16,8 +16,9 @@
             <td>${testing.id}</td>
             <td>${testing.question}</td>
             <td>
-                <input type="radio" name="rbutton" value="1">Да
-                <input type="radio" name="rbutton" value="2">Нет
+                <@s.radio label="" name="rbutton" list="#@java.util.LinkedHashMap@{true:'Frob it',false:'Leave unfrobbed'}" />
+<#--                <input type="radio" name="rbutton" value="1">Да
+                <input type="radio" name="rbutton" value="2">Нет-->
             </td>
         </tr>
         </tbody>
