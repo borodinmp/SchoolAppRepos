@@ -13,17 +13,7 @@ public class Testing {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "Please fill the text")
-    @Length(max = 255, message = "Text is to long")
     private String question;
-
-    @ManyToMany
-    @JoinTable(
-            name = "question_answer",
-            joinColumns = {@JoinColumn(name = "test_result_id")},
-            inverseJoinColumns = {@JoinColumn(name = "testing_id")}
-    )
-    private Set<Testing> testingSet;
 
     public Testing() {
     }

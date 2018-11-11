@@ -9,28 +9,21 @@ public class TestResult {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long questionId;
-
     private boolean answer;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
 
-
-    @ManyToMany
-    @JoinTable(
-            name = "question_answer",
-            joinColumns = {@JoinColumn(name = "testing_id")},
-            inverseJoinColumns = {@JoinColumn(name = "test_result_id")}
-    )
-    private Set<TestResult> testResultSet;
+    private long question_id;
 
     public TestResult(){
 
     }
-    public TestResult(boolean answer){
+    public TestResult(boolean answer, User author, long question_id){
     this.answer = answer;
+    this.author = author;
+    this.question_id = question_id;
     }
 
     public Long getId() {
@@ -61,20 +54,12 @@ public class TestResult {
         return author != null ? author.getUsername() : "<none>";
     }
 
-    public Long getQuestionId() {
-        return questionId;
+    public Long getQuestion_id() {
+        return question_id;
     }
 
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
-    }
-
-    public Set<TestResult> getTestResultSet() {
-        return testResultSet;
-    }
-
-    public void setTestResultSet(Set<TestResult> testResultSet) {
-        this.testResultSet = testResultSet;
+    public void setQuestion_id(Long question_id) {
+        this.question_id = question_id;
     }
 }
 

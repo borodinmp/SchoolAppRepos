@@ -16,6 +16,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -57,25 +59,65 @@ public class MainController {
         public String add(
                 @AuthenticationPrincipal User user,
                 @Valid TestResult testResult,
-                @RequestParam(value="rbutton") String rbutton,
+                @RequestParam(value="rbutton1") String rbutton1,
+                @RequestParam(value="rbutton2") String rbutton2,
+                @RequestParam(value="rbutton3") String rbutton3,
+                @RequestParam(value="rbutton4") String rbutton4,
+                @RequestParam(value="rbutton5") String rbutton5,
                 BindingResult bindingResult,
                 Model model
                 ){
-                testResult.setAuthor(user);
+
 
 /*            if(bindingResult.hasErrors()) {
                 Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
                 model.mergeAttributes(errorsMap);
                 model.addAttribute("testing", testing);
             } else {*/
-                    if (rbutton.equals("1")){
-                        testResult.setAnswer(true);
-                    }
-                    else if (rbutton.equals("2")){
-                        testResult.setAnswer(false);
-                    }
-                model.addAttribute("testResult" , null);
-            testResultRepo.save(testResult);
+
+            List<TestResult> testResultList = new ArrayList<>();
+
+            if (rbutton1.equals("1")){
+                testResultList.add(new TestResult(true, user, 1));
+            }
+            else if (rbutton1.equals("2")){
+                testResultList.add(new TestResult(false, user, 1));
+            }
+
+            if (rbutton2.equals("1")){
+                testResultList.add(new TestResult(true, user, 2));
+            }
+            else if (rbutton2.equals("2")){
+                testResultList.add(new TestResult(false, user, 2));
+            }
+
+            if (rbutton3.equals("1")){
+                testResultList.add(new TestResult(true, user, 3));
+            }
+            else if (rbutton3.equals("2")){
+                testResultList.add(new TestResult(false, user, 3));
+            }
+
+            if (rbutton4.equals("1")){
+                testResultList.add(new TestResult(true, user, 4));
+            }
+            else if (rbutton4.equals("2")){
+                testResultList.add(new TestResult(false, user, 4));
+            }
+
+            if (rbutton5.equals("1")){
+                testResultList.add(new TestResult(true, user, 5));
+            }
+            else if (rbutton5.equals("2")){
+                testResultList.add(new TestResult(false, user, 5));
+            }
+
+            model.addAttribute("testResult" , null);
+
+            for(TestResult testResult1: testResultList) {
+                testResultRepo.save(testResult1);
+            }
+
             /*}*/
 
             Iterable<Testing> testings = testingRepo.findAll();
@@ -87,7 +129,7 @@ public class MainController {
             return "main";
         }
 
-    @GetMapping("/user-testing/{user}")
+        @GetMapping("/user-testing/{user}")
         public String userTestings(
                 @AuthenticationPrincipal User currentUser,
                 @PathVariable User user,
