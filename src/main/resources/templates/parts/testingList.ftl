@@ -18,11 +18,6 @@
             <td>
                 <input type=radio name="${testing.id}" value="1">Да
                 <input type="radio"  name="${testing.id}" value="2">Нет
-
-                <div class="invalid-feedback">
-                    ${answerError}
-                </div>
-
             </td>
         </tr>
         </tbody>

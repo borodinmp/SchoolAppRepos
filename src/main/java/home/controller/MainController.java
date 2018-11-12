@@ -57,7 +57,8 @@ public class MainController {
 
         @PostMapping("text")
         public String add(
-                @AuthenticationPrincipal User user,
+                @AuthenticationPrincipal User currentUser,
+                @PathVariable Long user,
                 @Valid TestResult testResult,
                 @RequestParam(value="1") String rbutton1,
                 @RequestParam(value="2") String rbutton2,
@@ -79,10 +80,10 @@ public class MainController {
             for(int i=0; i<rbuttonList.length; i++) {
 
                 if (rbuttonList[i].equals("1")){
-                    testResultList.add(new TestResult(true, user, i+1));
+                    testResultList.add(new TestResult(true, currentUser, i+1));
                 }
                 else if (rbuttonList[i].equals("2")){
-                    testResultList.add(new TestResult(false, user, i+1));
+                    testResultList.add(new TestResult(false, currentUser, i+1));
                 }
             }
             model.addAttribute("testResult" , null);
@@ -99,19 +100,22 @@ public class MainController {
             Iterable<TestResult> testResults = testResultRepo.findAll();
             model.addAttribute("testResults", testResults);
 
-            return "main";
+            return "redirect:/user-testing/" + user;
         }
+
 
         @GetMapping("/user-testing/{user}")
         public String userTestings(
                 @AuthenticationPrincipal User currentUser,
                 @PathVariable User user,
                 @RequestParam(required = false) Testing testing,
+                TestResult testResult,
                 Model model){
             /*Set<Testing> testings = user.getTestings();*/
 
             /*model.addAttribute("testings", testings);*/
             model.addAttribute("testing", testing);
+            model.addAttribute("testResult", testResult);
             model.addAttribute("isCurrentUser", currentUser.equals(user));
 
             return "userTesting";

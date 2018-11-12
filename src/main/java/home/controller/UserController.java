@@ -57,10 +57,10 @@ public class UserController {
 
     @PostMapping("profile")
     public String updateProfile(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal User currentUser,
             @RequestParam String password
             ) {
-        userService.updateProfile(user, password);
+        userService.updateProfile(currentUser, password);
                 return "redirect:/user/profile";
     }
 

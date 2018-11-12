@@ -1,6 +1,5 @@
 <#import "parts/common.ftl" as c>
 
-
 <@c.page>
 <H5>${username}</H5>
     ${message?ifExists}

@@ -54,21 +54,6 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-
-    public boolean activateUser(String code) {
-        User user = userRepo.findByActivationCode(code);
-
-        if (user == null) {
-            return false;
-        }
-
-        user.setActivationCode(null);
-
-        userRepo.save(user);
-
-        return true;
-    }
-
     public List <User> findAll() {
         return userRepo.findAll();
     }
@@ -95,7 +80,7 @@ public class UserService implements UserDetailsService {
     public void updateProfile(User user, String password) {
 
        if (!StringUtils.isEmpty(password)) {
-           user.setPassword(password);
+           user.setPassword(passwordEncoder.encode(password));
        }
        userRepo.save(user);
 
