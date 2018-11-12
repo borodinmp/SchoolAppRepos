@@ -16,11 +16,17 @@
             <td>${testing.id}</td>
             <td>${testing.question}</td>
             <td>
-                <input type="radio" name="rbutton${testing.id}" value="1">Да
-                <input type="radio" name="rbutton${testing.id}" value="2">Нет
+                <input type=radio name="${testing.id}" value="1">Да
+                <input type="radio"  name="${testing.id}" value="2">Нет
+
+                <div class="invalid-feedback">
+                    ${answerError}
+                </div>
+
             </td>
         </tr>
         </tbody>
+
         <#else>
         No questions
         </#list>

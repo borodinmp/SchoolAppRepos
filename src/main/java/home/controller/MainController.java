@@ -59,66 +59,39 @@ public class MainController {
         public String add(
                 @AuthenticationPrincipal User user,
                 @Valid TestResult testResult,
-                @RequestParam(value="rbutton1") String rbutton1,
-                @RequestParam(value="rbutton2") String rbutton2,
-                @RequestParam(value="rbutton3") String rbutton3,
-                @RequestParam(value="rbutton4") String rbutton4,
-                @RequestParam(value="rbutton5") String rbutton5,
+                @RequestParam(value="1") String rbutton1,
+                @RequestParam(value="2") String rbutton2,
+                @RequestParam(value="3") String rbutton3,
+                @RequestParam(value="4") String rbutton4,
+                @RequestParam(value="5") String rbutton5,
+                @Valid ArrayList<TestResult> testResultList,
                 BindingResult bindingResult,
                 Model model
                 ){
-
-
-/*            if(bindingResult.hasErrors()) {
+            if(bindingResult.hasErrors()) {
                 Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
                 model.mergeAttributes(errorsMap);
-                model.addAttribute("testing", testing);
-            } else {*/
+                model.addAttribute("testResult", testResult);
+            } else {
 
-            List<TestResult> testResultList = new ArrayList<>();
+            String [] rbuttonList = {rbutton1,rbutton2,rbutton3,rbutton4,rbutton5};
 
-            if (rbutton1.equals("1")){
-                testResultList.add(new TestResult(true, user, 1));
-            }
-            else if (rbutton1.equals("2")){
-                testResultList.add(new TestResult(false, user, 1));
-            }
+            for(int i=0; i<rbuttonList.length; i++) {
 
-            if (rbutton2.equals("1")){
-                testResultList.add(new TestResult(true, user, 2));
+                if (rbuttonList[i].equals("1")){
+                    testResultList.add(new TestResult(true, user, i+1));
+                }
+                else if (rbuttonList[i].equals("2")){
+                    testResultList.add(new TestResult(false, user, i+1));
+                }
             }
-            else if (rbutton2.equals("2")){
-                testResultList.add(new TestResult(false, user, 2));
-            }
-
-            if (rbutton3.equals("1")){
-                testResultList.add(new TestResult(true, user, 3));
-            }
-            else if (rbutton3.equals("2")){
-                testResultList.add(new TestResult(false, user, 3));
-            }
-
-            if (rbutton4.equals("1")){
-                testResultList.add(new TestResult(true, user, 4));
-            }
-            else if (rbutton4.equals("2")){
-                testResultList.add(new TestResult(false, user, 4));
-            }
-
-            if (rbutton5.equals("1")){
-                testResultList.add(new TestResult(true, user, 5));
-            }
-            else if (rbutton5.equals("2")){
-                testResultList.add(new TestResult(false, user, 5));
-            }
-
             model.addAttribute("testResult" , null);
 
             for(TestResult testResult1: testResultList) {
                 testResultRepo.save(testResult1);
             }
 
-            /*}*/
+            }
 
             Iterable<Testing> testings = testingRepo.findAll();
             model.addAttribute("testings", testings);

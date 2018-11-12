@@ -1,6 +1,7 @@
 package home.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -9,6 +10,7 @@ public class TestResult {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull (message = "Установите значение поля")
     private boolean answer;
 
     @ManyToOne(fetch = FetchType.EAGER)
