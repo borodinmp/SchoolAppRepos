@@ -2,6 +2,8 @@ package home.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -63,5 +65,10 @@ public class TestResult {
     public void setQuestion_id(Long question_id) {
         this.question_id = question_id;
     }
+
+    public void setQuestion_id(long question_id) {
+        this.question_id = question_id;
+    }
+
 }
 

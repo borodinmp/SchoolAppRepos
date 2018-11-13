@@ -9,9 +9,8 @@ import java.util.List;
 
 public interface TestResultRepo extends CrudRepository<TestResult, Long>{
 
-    List<Testing> findById(long id);
-
-
+    List<TestResult> findById(long id);
+    
 }
 
 

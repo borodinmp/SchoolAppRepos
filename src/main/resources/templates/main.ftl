@@ -34,17 +34,14 @@
          </form>
      </div>-->
 
-<br>
-
-<div>Удаление элементов</div>
+<#--<div>Удаление элементов</div>
 <div class="form-inline">
 <form method="post" action="delete">
     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     <input type="text" name="id">
     <button type="submit">Удалить</button>
 </form>
-</div>
-    <br>
+</div>-->
         <#include "parts/testingEdit.ftl"/>
         <#include "parts/testingList.ftl"/>
 

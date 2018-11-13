@@ -2,7 +2,7 @@
 <div>
     <form method="post" action="text" enctype="multipart/form-data">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-    <table class="table">
+    <table class="table mx-auto" style="width: 80%;"  >
         <thead>
         <tr>
             <th>ID</th>
@@ -16,8 +16,8 @@
             <td>${testing.id}</td>
             <td>${testing.question}</td>
             <td>
-                <input type=radio name="${testing.id}" value="1">Да
-                <input type="radio"  name="${testing.id}" value="2">Нет
+                <input type="radio" name="${testing.id}" value="1">Да
+                <input type="radio" name="${testing.id}" value="2">Нет
             </td>
         </tr>
         </tbody>
@@ -26,6 +26,8 @@
         No questions
         </#list>
     </table>
-        <button class="btn btn-primary mt-3" type="submit">Отправить</button>
+
+        <button class="btn btn-primary mt-3 ml-4" type="submit">Отправить</button>
+
     </form>
 </div>

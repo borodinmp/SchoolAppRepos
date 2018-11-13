@@ -1,7 +1,34 @@
+<#include "parts/security.ftl">
 <#import "parts/common.ftl" as c>
 <@c.page>
 <#if isCurrentUser>
-    <#include "parts/testingEdit.ftl" />
+<div>
+    <form method="post" action="text" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+        <table class="table mx-auto" style="width: 80%;" >
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Вопрос</th>
+                <th>Ответ</th>
+            </thead>
+        <tbody>
+        </tr>
+
+        <#list testings as testing>
+        <tr>
+            <td>${testing.id}</td>
+            <td>${testing.question}</td></#list><#list testResults as testResult>
+            <td>
+                ${testResult.answer?string('yes', 'no')}
+            </td></#list>
+        </tr>
+        </tbody>
+
+        <#else>
+        No questions
+        </table>
+    </form>
+</div>
 </#if>
-    <#include "parts/testingList.ftl" />
 </@c.page>

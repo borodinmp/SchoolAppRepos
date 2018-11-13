@@ -6,8 +6,13 @@ import home.domain.User;
 import home.repos.TestResultRepo;
 import home.repos.TestingRepo;
 import home.service.FindService;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class MainController {
@@ -57,8 +60,7 @@ public class MainController {
 
         @PostMapping("text")
         public String add(
-                @AuthenticationPrincipal User currentUser,
-                @PathVariable Long user,
+                @AuthenticationPrincipal User user,
                 @Valid TestResult testResult,
                 @RequestParam(value="1") String rbutton1,
                 @RequestParam(value="2") String rbutton2,
@@ -69,6 +71,7 @@ public class MainController {
                 BindingResult bindingResult,
                 Model model
                 ){
+
             if(bindingResult.hasErrors()) {
                 Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
                 model.mergeAttributes(errorsMap);
@@ -80,10 +83,10 @@ public class MainController {
             for(int i=0; i<rbuttonList.length; i++) {
 
                 if (rbuttonList[i].equals("1")){
-                    testResultList.add(new TestResult(true, currentUser, i+1));
+                    testResultList.add(new TestResult(true, user, i+1));
                 }
                 else if (rbuttonList[i].equals("2")){
-                    testResultList.add(new TestResult(false, currentUser, i+1));
+                    testResultList.add(new TestResult(false, user, i+1));
                 }
             }
             model.addAttribute("testResult" , null);
@@ -91,7 +94,6 @@ public class MainController {
             for(TestResult testResult1: testResultList) {
                 testResultRepo.save(testResult1);
             }
-
             }
 
             Iterable<Testing> testings = testingRepo.findAll();
@@ -100,7 +102,7 @@ public class MainController {
             Iterable<TestResult> testResults = testResultRepo.findAll();
             model.addAttribute("testResults", testResults);
 
-            return "redirect:/user-testing/" + user;
+            return "main";
         }
 
 
@@ -108,12 +110,17 @@ public class MainController {
         public String userTestings(
                 @AuthenticationPrincipal User currentUser,
                 @PathVariable User user,
-                @RequestParam(required = false) Testing testing,
                 TestResult testResult,
+                Testing testing,
                 Model model){
-            /*Set<Testing> testings = user.getTestings();*/
 
-            /*model.addAttribute("testings", testings);*/
+            Set<TestResult> testResults = user.getTestResults();
+
+            Iterable<Testing> testings = testingRepo.findAll();
+            model.addAttribute("testings", testings);
+
+            model.addAttribute("testResults", testResults);
+
             model.addAttribute("testing", testing);
             model.addAttribute("testResult", testResult);
             model.addAttribute("isCurrentUser", currentUser.equals(user));
