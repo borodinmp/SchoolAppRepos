@@ -6,20 +6,14 @@ import home.domain.User;
 import home.repos.TestResultRepo;
 import home.repos.TestingRepo;
 import home.service.FindService;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.*;
 
@@ -39,7 +33,7 @@ public class MainController {
         private String uploadPath;
 
         @GetMapping("/")
-        public String greeting(Map<String,Object> model) {
+        public String greeting() {
             return "greeting";
             }
 
@@ -69,6 +63,7 @@ public class MainController {
                 @RequestParam(value="5") String rbutton5,
                 @Valid ArrayList<TestResult> testResultList,
                 BindingResult bindingResult,
+                Testing test,
                 Model model
                 ){
 
@@ -83,10 +78,10 @@ public class MainController {
             for(int i=0; i<rbuttonList.length; i++) {
 
                 if (rbuttonList[i].equals("1")){
-                    testResultList.add(new TestResult(true, user, i+1));
+                    testResultList.add(new TestResult(true, user, i+1,  findService.findString(i)));
                 }
                 else if (rbuttonList[i].equals("2")){
-                    testResultList.add(new TestResult(false, user, i+1));
+                    testResultList.add(new TestResult(false, user, i+1, findService.findString(i)));
                 }
             }
             model.addAttribute("testResult" , null);
@@ -105,7 +100,6 @@ public class MainController {
             return "main";
         }
 
-
         @GetMapping("/user-testing/{user}")
         public String userTestings(
                 @AuthenticationPrincipal User currentUser,
@@ -117,6 +111,7 @@ public class MainController {
             Set<TestResult> testResults = user.getTestResults();
 
             Iterable<Testing> testings = testingRepo.findAll();
+
             model.addAttribute("testings", testings);
 
             model.addAttribute("testResults", testResults);

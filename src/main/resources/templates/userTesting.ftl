@@ -15,18 +15,19 @@
         <tbody>
         </tr>
 
-        <#list testings as testing>
+        <#list testResults as testResult>
         <tr>
-            <td>${testing.id}</td>
-            <td>${testing.question}</td></#list><#list testResults as testResult>
+            <td>${testResult.id}</td>
+            <td>${testResult.quest}</td>
             <td>
                 ${testResult.answer?string('yes', 'no')}
-            </td></#list>
+            </td>
         </tr>
         </tbody>
 
         <#else>
         No questions
+        </#list>
         </table>
     </form>
 </div>

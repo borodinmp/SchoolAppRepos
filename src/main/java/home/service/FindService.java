@@ -27,6 +27,11 @@ public class FindService {
         return testings;
     }
 
+    public String findString(int idx) {
+        List<Testing> list = testingRepo.getById((long)idx);
+        return list.get(idx).getQuestion();
+    }
+
     public Iterable<Testing> getTestings() {
         return testings;
     }

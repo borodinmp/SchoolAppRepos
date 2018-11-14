@@ -13,6 +13,7 @@ create table test_result (
     answer boolean,
     user_id int8,
     question_id int8,
+    quest varchar(255),
     primary key (id)
 );
 
@@ -30,10 +31,11 @@ create table usr (
     primary key (id)
 );
 
-alter table if exists message
-    add constraint message_user_fk
+alter table if exists test_result
+    add constraint test_result_user_fk
     foreign key (user_id) references usr;
 
 alter table if exists user_role
     add constraint user_role_user_fk
     foreign key (user_id) references usr;
+
