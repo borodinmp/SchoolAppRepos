@@ -63,7 +63,6 @@ public class MainController {
                 @RequestParam(value="5") String rbutton5,
                 @Valid ArrayList<TestResult> testResultList,
                 BindingResult bindingResult,
-                Testing test,
                 Model model
                 ){
 
@@ -78,17 +77,19 @@ public class MainController {
             for(int i=0; i<rbuttonList.length; i++) {
 
                 if (rbuttonList[i].equals("1")){
-                    testResultList.add(new TestResult(true, user, i+1,  findService.findString(i)));
+                    testResult = new TestResult(true, user, i+1);
                 }
                 else if (rbuttonList[i].equals("2")){
-                    testResultList.add(new TestResult(false, user, i+1, findService.findString(i)));
+                    testResult = new TestResult(false, user, i+1);
                 }
+
+                testResultRepo.save(testResult);
             }
             model.addAttribute("testResult" , null);
 
-            for(TestResult testResult1: testResultList) {
+            /*for(TestResult testResult1: testResultList) {
                 testResultRepo.save(testResult1);
-            }
+            }*/
             }
 
             Iterable<Testing> testings = testingRepo.findAll();
@@ -110,7 +111,7 @@ public class MainController {
 
             Set<TestResult> testResults = user.getTestResults();
 
-            Iterable<Testing> testings = testingRepo.findAll();
+            Iterable<Testing> testings = testingRepo.findAllActive();
 
             model.addAttribute("testings", testings);
 

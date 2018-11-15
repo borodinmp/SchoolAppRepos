@@ -5,7 +5,7 @@
 <div>
     <form method="post" action="text" enctype="multipart/form-data">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <table class="table mx-auto" style="width: 80%;" >
+        <table class="table mx-auto" style="width: 90%;" >
             <thead>
             <tr>
                 <th>ID</th>
@@ -15,12 +15,12 @@
         <tbody>
         </tr>
 
-        <#list testResults as testResult>
+        <#list testings as testing>
         <tr>
-            <td>${testResult.id}</td>
-            <td>${testResult.quest}</td>
+            <td>${testing.id}</td>
+            <td>${testing.question}</td>
             <td>
-                ${testResult.answer?string('yes', 'no')}
+                ${testing.answer?string('yes', 'no')}
             </td>
         </tr>
         </tbody>

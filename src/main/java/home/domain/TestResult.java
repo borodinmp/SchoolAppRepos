@@ -21,16 +21,13 @@ public class TestResult {
 
     private long question_id;
 
-    private String quest;
-
     public TestResult(){
 
     }
-    public TestResult(boolean answer, User author, long question_id, String quest){
+    public TestResult(boolean answer, User author, long question_id){
     this.answer = answer;
     this.author = author;
     this.question_id = question_id;
-    this.quest = quest;
     }
 
     public Long getId() {
@@ -73,12 +70,5 @@ public class TestResult {
         this.question_id = question_id;
     }
 
-    public String getQuest() {
-        return quest;
-    }
-
-    public void setQuest(String quest) {
-        this.quest = quest;
-    }
 }
 
