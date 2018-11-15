@@ -13,7 +13,7 @@ create table test_result (
     answer boolean,
     user_id int8,
     question_id int8,
-    testing_id int8,
+    quest varchar(255),
     primary key (id)
 );
 

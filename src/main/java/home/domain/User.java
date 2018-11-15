@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set <TestResult> testResults;
+    private List <TestResult> testResults;
 
     @Override
     public boolean equals(Object o) {
@@ -125,11 +126,11 @@ public class User implements UserDetails {
         this.activationCode = activationCode;
     }
 
-    public Set<TestResult> getTestResults() {
+    public List<TestResult> getTestResults() {
         return testResults;
     }
 
-    public void setTestResults(Set<TestResult> testResults) {
+    public void setTestResults(List<TestResult> testResults) {
         this.testResults = testResults;
     }
 }

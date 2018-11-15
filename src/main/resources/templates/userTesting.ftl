@@ -15,12 +15,12 @@
         <tbody>
         </tr>
 
-        <#list testings as testing>
+        <#list testResults as testResult>
         <tr>
-            <td>${testing.id}</td>
-            <td>${testing.question}</td>
+            <td>${testResult.id}</td>
+            <td>${testResult.quest}</td>
             <td>
-                ${testing.answer?string('yes', 'no')}
+                ${testResult.answer?string('yes', 'no')}
             </td>
         </tr>
         </tbody>

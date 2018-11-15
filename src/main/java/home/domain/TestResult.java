@@ -21,13 +21,16 @@ public class TestResult {
 
     private long question_id;
 
+    private String quest;
+
     public TestResult(){
 
     }
-    public TestResult(boolean answer, User author, long question_id){
+    public TestResult(boolean answer, User author, long question_id, String quest){
     this.answer = answer;
     this.author = author;
     this.question_id = question_id;
+    this.quest = quest;
     }
 
     public Long getId() {
@@ -54,21 +57,25 @@ public class TestResult {
         this.author = author;
     }
 
-    public String getAuthorName() {
-        return author != null ? author.getUsername() : "<none>";
-    }
-
-    public Long getQuestion_id() {
+    public long getQuestion_id() {
         return question_id;
-    }
-
-    public void setQuestion_id(Long question_id) {
-        this.question_id = question_id;
     }
 
     public void setQuestion_id(long question_id) {
         this.question_id = question_id;
     }
 
+    public String getAuthorName() {
+        return author != null ? author.getUsername() : "<none>";
+
+    }
+
+    public String getQuest() {
+        return quest;
+    }
+
+    public void setQuest(String quest) {
+        this.quest = quest;
+    }
 }
 

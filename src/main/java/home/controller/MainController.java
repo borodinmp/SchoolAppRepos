@@ -6,6 +6,7 @@ import home.domain.User;
 import home.repos.TestResultRepo;
 import home.repos.TestingRepo;
 import home.service.FindService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -54,14 +55,13 @@ public class MainController {
 
         @PostMapping("text")
         public String add(
-                @AuthenticationPrincipal User user,
+                @AuthenticationPrincipal User currentUser,
                 @Valid TestResult testResult,
                 @RequestParam(value="1") String rbutton1,
                 @RequestParam(value="2") String rbutton2,
                 @RequestParam(value="3") String rbutton3,
                 @RequestParam(value="4") String rbutton4,
                 @RequestParam(value="5") String rbutton5,
-                @Valid ArrayList<TestResult> testResultList,
                 BindingResult bindingResult,
                 Model model
                 ){
@@ -72,24 +72,20 @@ public class MainController {
                 model.addAttribute("testResult", testResult);
             } else {
 
-            String [] rbuttonList = {rbutton1,rbutton2,rbutton3,rbutton4,rbutton5};
+                    String[] rbuttonList = {rbutton1, rbutton2, rbutton3, rbutton4, rbutton5};
 
-            for(int i=0; i<rbuttonList.length; i++) {
+                    for (int i = 0; i < rbuttonList.length; i++) {
 
-                if (rbuttonList[i].equals("1")){
-                    testResult = new TestResult(true, user, i+1);
-                }
-                else if (rbuttonList[i].equals("2")){
-                    testResult = new TestResult(false, user, i+1);
-                }
+                        if (rbuttonList[i].equals("1")) {
+                            testResult = new TestResult(true, currentUser, i + 1, testingRepo.findQuest(i + 1));
+                        } else if (rbuttonList[i].equals("2")) {
+                            testResult = new TestResult(false, currentUser, i + 1, testingRepo.findQuest(i + 1));
+                        }
 
-                testResultRepo.save(testResult);
-            }
-            model.addAttribute("testResult" , null);
+                        testResultRepo.save(testResult);
+                    }
 
-            /*for(TestResult testResult1: testResultList) {
-                testResultRepo.save(testResult1);
-            }*/
+                    model.addAttribute("testResult", null);
             }
 
             Iterable<Testing> testings = testingRepo.findAll();
@@ -105,11 +101,9 @@ public class MainController {
         public String userTestings(
                 @AuthenticationPrincipal User currentUser,
                 @PathVariable User user,
-                TestResult testResult,
-                Testing testing,
                 Model model){
 
-            Set<TestResult> testResults = user.getTestResults();
+            List<TestResult> testResults = user.getTestResults();
 
             Iterable<Testing> testings = testingRepo.findAllActive();
 
@@ -117,8 +111,6 @@ public class MainController {
 
             model.addAttribute("testResults", testResults);
 
-            model.addAttribute("testing", testing);
-            model.addAttribute("testResult", testResult);
             model.addAttribute("isCurrentUser", currentUser.equals(user));
 
             return "userTesting";
