@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Controller
@@ -53,18 +54,16 @@ public class MainController {
             return "main";
             }
 
-            private static final  int i = 1++;
-
         @PostMapping("text/{user}")
         public String add(
                 @AuthenticationPrincipal User currentUser,
                 @PathVariable User user,
                 @Valid TestResult testResult,
-                @RequestParam(value="1") String rbutton1,
-                @RequestParam(value="2") String rbutton2,
-                @RequestParam(value="3") String rbutton3,
-                @RequestParam(value="4") String rbutton4,
-                @RequestParam(value="5") String rbutton5,
+                @NotNull(message = "1111111111111")@RequestParam(value="1") String rbutton1,
+                @NotNull(message = "1111111111111")@RequestParam(value="2") String rbutton2,
+                @NotNull(message = "1111111111111")@RequestParam(value="3") String rbutton3,
+                @NotNull(message = "1111111111111")@RequestParam(value="4") String rbutton4,
+                @NotNull(message = "1111111111111")@RequestParam(value="5") String rbutton5,
                 BindingResult bindingResult,
                 Model model
                 ){
@@ -83,7 +82,8 @@ public class MainController {
                             testResult = new TestResult(true, currentUser, j, testingRepo.findQuest(j));
                         } else if (rbuttonList[i].equals("2")) {
                             testResult = new TestResult(false, currentUser, j, testingRepo.findQuest(j));
-                        }
+                        } else { boolean chkBtn = true;
+                            model.addAttribute("chkBtn", chkBtn); }
 
                         testResultRepo.save(testResult);
                     }
@@ -113,12 +113,7 @@ public class MainController {
 
             List<TestResult> testResults = user.getTestResults();
 
-            Iterable<Testing> testings = testingRepo.findAllActive();
-
-            model.addAttribute("testings", testings);
-
             model.addAttribute("testResults", testResults);
-
             model.addAttribute("isCurrentUser", currentUser.equals(user));
 
             return "userTesting";

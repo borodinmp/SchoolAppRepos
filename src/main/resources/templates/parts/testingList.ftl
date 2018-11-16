@@ -1,7 +1,8 @@
 <#include "security.ftl">
 <div>
-<#if chkUsr??><div>Данные на пользователя <b>${user.username}</b> уже имеются в базе</div>
-<#else>
+<#if chkUsr??><div>Данные на пользователя <b>${user.username}</b> уже имеются в базе</div></#if>
+<br>
+<#if chkBtn??><div>Не все поля заполнены!</div></#if>
     <form method="post" action="text/${user.id}" enctype="multipart/form-data">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     <table class="table mx-auto" style="width: 90%;"  >
@@ -20,6 +21,8 @@
             <td>
                 <input type="radio" name="${testing.id}" value="1">Да
                 <input type="radio" name="${testing.id}" value="2">Нет
+
+                </div>
             </td>
         </tr>
         </tbody>
@@ -31,5 +34,5 @@
         <button class="btn btn-primary mt-3 ml-4" type="submit">Отправить</button>
 
     </form>
-    </#if>
+
 </div>

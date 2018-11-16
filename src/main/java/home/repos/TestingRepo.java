@@ -15,10 +15,6 @@ public interface TestingRepo extends CrudRepository<Testing, Long>{
 
     List<Testing> getById(Long id);
 
-    @Query(value = "SELECT * FROM TESTING t, TEST_RESULT r WHERE t.id=r.question_id",
-            nativeQuery = true)
-    Collection<Testing> findAllActive();
-
     @Query(value = "SELECT question FROM TESTING where id = :idx",
             nativeQuery = true)
     String findQuest(@Param("idx") int index);
