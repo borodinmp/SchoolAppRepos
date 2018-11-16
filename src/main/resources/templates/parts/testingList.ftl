@@ -1,6 +1,8 @@
 <#include "security.ftl">
 <div>
-    <form method="post" action="text" enctype="multipart/form-data">
+<#if chkUsr??><div>Данные на пользователя <b>${user.username}</b> уже имеются в базе</div>
+<#else>
+    <form method="post" action="text/${user.id}" enctype="multipart/form-data">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     <table class="table mx-auto" style="width: 90%;"  >
         <thead>
@@ -26,8 +28,8 @@
         No questions
         </#list>
     </table>
-
         <button class="btn btn-primary mt-3 ml-4" type="submit">Отправить</button>
 
     </form>
+    </#if>
 </div>

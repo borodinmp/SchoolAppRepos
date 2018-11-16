@@ -53,9 +53,12 @@ public class MainController {
             return "main";
             }
 
-        @PostMapping("text")
+            private static final  int i = 1++;
+
+        @PostMapping("text/{user}")
         public String add(
                 @AuthenticationPrincipal User currentUser,
+                @PathVariable User user,
                 @Valid TestResult testResult,
                 @RequestParam(value="1") String rbutton1,
                 @RequestParam(value="2") String rbutton2,
@@ -71,21 +74,26 @@ public class MainController {
                 model.mergeAttributes(errorsMap);
                 model.addAttribute("testResult", testResult);
             } else {
-
+                if (user.getTestResults().size() == 0) {
                     String[] rbuttonList = {rbutton1, rbutton2, rbutton3, rbutton4, rbutton5};
 
-                    for (int i = 0; i < rbuttonList.length; i++) {
+                    for (int i = 0, j = 1 ; i < rbuttonList.length; i++, j++) {
 
                         if (rbuttonList[i].equals("1")) {
-                            testResult = new TestResult(true, currentUser, i + 1, testingRepo.findQuest(i + 1));
+                            testResult = new TestResult(true, currentUser, j, testingRepo.findQuest(j));
                         } else if (rbuttonList[i].equals("2")) {
-                            testResult = new TestResult(false, currentUser, i + 1, testingRepo.findQuest(i + 1));
+                            testResult = new TestResult(false, currentUser, j, testingRepo.findQuest(j));
                         }
 
                         testResultRepo.save(testResult);
                     }
 
                     model.addAttribute("testResult", null);
+
+                } else {
+                    boolean chkUsr = true;
+                    model.addAttribute("chkUsr", chkUsr);
+                }
             }
 
             Iterable<Testing> testings = testingRepo.findAll();
