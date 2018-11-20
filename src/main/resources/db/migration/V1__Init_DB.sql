@@ -1,10 +1,8 @@
-
 create sequence hibernate_sequence start 1 increment 1;
 
 create table testing (
     id int8 not null,
     question varchar(255),
-    user_id int8,
     primary key (id)
 );
 
@@ -24,10 +22,10 @@ create table user_role (
 
 create table usr (
     id int8 not null,
-    activation_code varchar(255),
     active boolean not null,
     password varchar(255) not null,
     username varchar(255) not null,
+    full_name varchar(255) not null,
     primary key (id)
 );
 

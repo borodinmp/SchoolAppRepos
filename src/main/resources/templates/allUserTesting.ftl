@@ -1,11 +1,11 @@
 <#include "parts/security.ftl">
 <#import "parts/common.ftl" as c>
 <@c.page>
-<#if isCurrentUser>
+<#if isTeacher>
 <div>
-    <form method="post" action="text" enctype="multipart/form-data">
-        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <table class="table mx-auto" style="width: 90%;" >
+    <div>${fullName}</div>
+    <form method="post" action="text">
+        <table class="table mx-auto" style="width: 90%; " >
             <thead>
             <tr>
                 <th>ID</th>

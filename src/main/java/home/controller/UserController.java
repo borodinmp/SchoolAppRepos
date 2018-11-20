@@ -8,8 +8,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -24,6 +27,7 @@ public class UserController {
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", userService.findAll());
+
         return "userList";
     }
 
@@ -32,6 +36,7 @@ public class UserController {
     public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
+
         return "userEdit";
     }
 
@@ -45,25 +50,40 @@ public class UserController {
         userService.saveUser(user,username,form);
 
         return "redirect:/user";
-
     }
 
     @GetMapping("profile")
-    public String getProfile(Model model, @AuthenticationPrincipal User user) {
+    public String getProfile(
+            Model model,
+            @AuthenticationPrincipal User user) {
     model.addAttribute("username", user.getUsername());
-
+    model.addAttribute("fullname", user.getFullName());
     return "profile";
     }
 
     @PostMapping("profile")
     public String updateProfile(
-            @AuthenticationPrincipal User currentUser,
-            @RequestParam String password
+            @AuthenticationPrincipal User user,
+            @RequestParam("password") String password,
+            @RequestParam("password2") String passwordConfirm,
+            @RequestParam("fullName") String fullName,
+            Model model
             ) {
-        userService.updateProfile(currentUser, password);
-                return "redirect:/user/profile";
+
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("fullname", user.getFullName());
+
+        if (fullName.isEmpty()) {
+            model.addAttribute("fullNameError", "Пожалуйста, введите фамилию, имя и отчество");
+            return "profile";
+        }
+
+        if (password.isEmpty() || !password.equals(passwordConfirm)) {
+            model.addAttribute("passwordError", "Пароли не совпадают либо не введены");
+            return "profile";
+        }
+            userService.updateProfile(user, password, fullName);
+            return "redirect:/user/profile";
+
     }
-
-
-
 }

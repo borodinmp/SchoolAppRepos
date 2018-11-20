@@ -1,9 +1,9 @@
 <#macro login path isRegisterForm>
 <form action="${path}" method="post">
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">User Name:</label>
+        <label class="col-sm-2 col-form-label">Login:</label>
         <div class="col-sm-6">
-            <input type="text" name="username" value="<#if user??>${user.username}</#if>" class="form-control ${(usernameError??)?string('is-invalid', '')}" placeholder="User name"/>
+            <input type="text" name="username" value="<#if user??>${user.username}</#if>" class="form-control ${(usernameError??)?string('is-invalid', '')}" placeholder="Login"/>
             <#if usernameError??>
                       <div class="invalid-feedback">
                           ${usernameError}
@@ -11,7 +11,19 @@
             </#if>
         </div>
     </div>
-
+    <#if isRegisterForm>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Full name:</label>
+        <div class="col-sm-6">
+            <input type="text" name="fullName" value="<#if user??>${user.fullName}</#if>" class="form-control ${(fullNameError??)?string('is-invalid', '')}" placeholder="Full name"/>
+            <#if fullNameError??>
+                      <div class="invalid-feedback">
+                          ${fullNameError}
+                      </div>
+            </#if>
+        </div>
+    </div>
+    </#if>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label"> Password:</label>
         <div class="col-sm-6">
@@ -36,14 +48,6 @@
             </div>
         </div>
     <div class="form-group row">
-    </div>
-    <div>
-        <div class="g-recaptcha" data-sitekey="6LcbgnUUAAAAADuyB1UMF6ACNIBAb5YBjYxApedj"></div>
-            <#if captchaError??>
-        <div class="alert alert-danger" role="alert">
-            ${captchaError}
-        </div>
-            </#if>
     </div>
     </#if>
     <input type="hidden" name="_csrf" value="${_csrf.token}"/>

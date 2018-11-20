@@ -22,16 +22,12 @@ import java.util.Map;
 @Controller
 public class RegistrationController {
 
-    private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response";
-
     @Autowired
     UserService userService;
 
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${recaptcha.secret}")
-    private String secret;
 
     @GetMapping("/registration")
     public String registration() {
@@ -41,17 +37,9 @@ public class RegistrationController {
     @PostMapping("/registration")
     public String addUser(
             @RequestParam("password2") String passwordConfirm,
-            @RequestParam("g-recaptcha-response") String captchaResponse,
             @Valid User user,
             BindingResult bindingResult,
             Model model) {
-
-        String url = String.format(CAPTCHA_URL, secret, captchaResponse);
-        CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
-
-        if (/*!*/response.isSuccess()) {
-            model.addAttribute("captchaError", "Fill Captcha!");
-        }
 
         boolean isConfirmEmpty = StringUtils.isEmpty(passwordConfirm);
 
@@ -59,12 +47,17 @@ public class RegistrationController {
             model.addAttribute("password2Error", "Password conformation cannot be empty");
         }
 
+        if(user.getFullName().isEmpty()) {
+            model.addAttribute("fullNameError", "Please fill yours full name");
+            return "registration";
+        }
+
         if(user.getPassword() != null && !user.getPassword().equals(passwordConfirm)){
             model.addAttribute("passwordError", "Password are different!");
             return "registration";
         }
 
-        if (isConfirmEmpty || bindingResult.hasErrors()/* || !response.isSuccess()*/) {
+        if (isConfirmEmpty || bindingResult.hasErrors()) {
             Map <String, String> errors = ControllerUtils.getErrors(bindingResult);
 
             model.mergeAttributes(errors);
@@ -79,6 +72,5 @@ public class RegistrationController {
 
         return "redirect:/login";
     }
-
 
 }

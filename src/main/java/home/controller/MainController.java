@@ -5,10 +5,13 @@ import home.domain.Testing;
 import home.domain.User;
 import home.repos.TestResultRepo;
 import home.repos.TestingRepo;
+import home.repos.UserRepo;
 import home.service.FindService;
+import home.service.UserService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +34,11 @@ public class MainController {
         @Autowired
         private TestingRepo testingRepo;
 
-        @Value("${upload.path}")
-        private String uploadPath;
+        @Autowired
+        private UserRepo userRepo;
+
+        @Autowired
+        private UserService userService;
 
         @GetMapping("/")
         public String greeting() {
@@ -119,7 +125,31 @@ public class MainController {
             return "userTesting";
         }
 
-        @PostMapping("/user-testing/{user}")
+    @GetMapping("/users-show")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
+    public String userShow(
+            Model model){
+
+        model.addAttribute("users", userService.findAll());
+
+        return "usersShow";
+    }
+
+    @GetMapping("/all-user-testing/{user}")
+    public String teacherPanel(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user,
+            Model model){
+
+        List<TestResult> testResults = user.getTestResults();
+
+        model.addAttribute("testResults", testResults);
+        model.addAttribute("fullName", user.getFullName());
+
+        return "allUserTesting";
+    }
+
+/*        @PostMapping("/user-testing/{user}")
         public String updateTestings(
                 @AuthenticationPrincipal User currentUser,
                 @PathVariable Long user,
@@ -127,25 +157,25 @@ public class MainController {
                 @RequestParam("question") String question,
                 @RequestParam("rbutton") String rbutton){
 
-/*            if (testing.getAuthor().equals(currentUser)) {
+            if (testing.getAuthor().equals(currentUser)) {
                 if (!StringUtils.isEmpty(question)) {
                     testing.setQuestion(question);
-                }*/
+                }
 
-/*                if (!StringUtils.isEmpty(rbutton)) {
+                if (!StringUtils.isEmpty(rbutton)) {
                     if (rbutton.equals(1)){
                         testResult.setAnswer(true);
                     }
                     else if (rbutton.equals(2)){
                         testResult.setAnswer(false);
                     }
-                }*/
+                }
 
                 testingRepo.save(testing);
-           /* }*/
+            }
 
             return "redirect:/user-testing/" + user;
-        }
+        }*/
 
         @PostMapping("delete")
         @Transactional

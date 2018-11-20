@@ -17,15 +17,17 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @NotBlank(message = "Please fill the text")
     private String username;
 
     @NotBlank(message = "Please fill the text")
     private String password;
 
-    private boolean active;
+    @NotBlank(message = "Please fill the text")
+    private String fullName;
 
-    private String activationCode;
+    private boolean active;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -52,6 +54,12 @@ public class User implements UserDetails {
         return roles.contains(Role.ADMIN);
     }
 
+    public boolean isTeacher(){
+        return roles.contains(Role.TEACHER);
+    }
+
+    public boolean isUser(){
+        return roles.contains(Role.USER);}
 
     @Override
     public boolean isAccountNonExpired() {
@@ -118,19 +126,19 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public String getActivationCode() {
-        return activationCode;
-    }
-
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
-    }
-
     public List<TestResult> getTestResults() {
         return testResults;
     }
 
     public void setTestResults(List<TestResult> testResults) {
         this.testResults = testResults;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

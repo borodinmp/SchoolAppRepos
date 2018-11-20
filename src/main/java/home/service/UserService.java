@@ -1,6 +1,5 @@
 package home.service;
 
-
 import home.domain.Role;
 import home.domain.User;
 import home.repos.UserRepo;
@@ -24,7 +23,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepo userRepo;
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -45,7 +43,6 @@ public class UserService implements UserDetailsService {
 
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
-        user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepo.save(user);
@@ -74,13 +71,13 @@ public class UserService implements UserDetailsService {
         }
 
         userRepo.save(user);
-
     }
 
-    public void updateProfile(User user, String password) {
+    public void updateProfile(User user, String password, String fullName) {
 
        if (!StringUtils.isEmpty(password)) {
            user.setPassword(passwordEncoder.encode(password));
+           user.setFullName(fullName);
        }
        userRepo.save(user);
 
