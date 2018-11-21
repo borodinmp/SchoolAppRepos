@@ -55,6 +55,10 @@ public class UserService implements UserDetailsService {
         return userRepo.findAll();
     }
 
+    public List <User> findUser() {
+        return userRepo.findByUserRole();
+    }
+
     public void saveUser(User user, String username, Map<String, String> form) {
         user.setUsername(username);
 

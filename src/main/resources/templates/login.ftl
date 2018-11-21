@@ -7,7 +7,7 @@
             ${Session.SPRING_SECURITY_LAST_EXCEPTION.message}
         </div>
     </#if>
-Login page
+Страница входа
     <#if message??>
         <div class="alert alert-${messageType}" role="alert">
             ${message}

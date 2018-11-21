@@ -13,11 +13,6 @@ public interface TestResultRepo extends CrudRepository<TestResult, Long>{
 
     List<TestResult> findById(long id);
 
-    @Query(value = "SELECT question_id FROM test_result t WHERE t.question_id=1",
-            nativeQuery = true)
-    int findIfIdExists();
-
-
     
 }
 

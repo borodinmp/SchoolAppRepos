@@ -15,6 +15,8 @@ public class Testing {
 
     private String question;
 
+    private boolean checking;
+
     public Testing() {
     }
 
@@ -38,4 +40,11 @@ public class Testing {
         this.question = question;
     }
 
+    public boolean isChecking() {
+        return checking;
+    }
+
+    public void setChecking(boolean checking) {
+        this.checking = checking;
+    }
 }

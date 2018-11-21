@@ -3,6 +3,7 @@ create sequence hibernate_sequence start 1 increment 1;
 create table testing (
     id int8 not null,
     question varchar(255),
+    checking boolean,
     primary key (id)
 );
 
@@ -12,6 +13,7 @@ create table test_result (
     user_id int8,
     question_id int8,
     quest varchar(255),
+    check_quest boolean,
     primary key (id)
 );
 

@@ -5,7 +5,7 @@
 <div>
     <form method="post" action="text" enctype="multipart/form-data">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <table class="table mx-auto" style="width: 90%;" >
+        <table class="table mx-auto" >
             <thead>
             <tr>
                 <th>ID</th>
@@ -24,9 +24,8 @@
             </td>
         </tr>
         </tbody>
-
         <#else>
-        No questions
+        No answers
         </#list>
         </table>
     </form>

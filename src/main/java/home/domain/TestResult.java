@@ -23,14 +23,17 @@ public class TestResult {
 
     private String quest;
 
+    private boolean checkQuest;
+
     public TestResult(){
 
     }
-    public TestResult(boolean answer, User author, long question_id, String quest){
+    public TestResult(boolean answer, User author, long question_id, String quest, boolean checkQuest){
     this.answer = answer;
     this.author = author;
     this.question_id = question_id;
     this.quest = quest;
+    this.checkQuest = checkQuest;
     }
 
     public Long getId() {
@@ -76,6 +79,14 @@ public class TestResult {
 
     public void setQuest(String quest) {
         this.quest = quest;
+    }
+
+    public boolean isCheckQuest() {
+        return checkQuest;
+    }
+
+    public void setCheckQuest(boolean checkQuest) {
+        this.checkQuest = checkQuest;
     }
 }
 

@@ -1,8 +1,8 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-<H5>${username}</H5>
-    ${message?ifExists}
+<H5>Профиль:  ${username}</H5>
+<br>
 <form method="post">
 
     <div class="form-group row">
@@ -19,7 +19,7 @@
     </div>
 
        <div class="form-group row">
-           <label class="col-sm-2 col-form-label"> Password:</label>
+           <label class="col-sm-2 col-form-label"> Пароль:</label>
            <div class="col-sm-6">
                <input type="password" name="password" class="form-control ${(passwordError??)?string('is-invalid', '')}" placeholder="Password"/>
             <#if passwordError??>
@@ -30,9 +30,9 @@
            </div>
        </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Retype Password:</label>
+            <label class="col-sm-2 col-form-label"> Повторите пароль:</label>
             <div class="col-sm-6">
-                <input type="password" name="password2" class="form-control ${(passwordError??)?string('is-invalid', '')}" placeholder="Password"/>
+                <input type="password" name="password2" class="form-control ${(passwordError??)?string('is-invalid', '')}" placeholder="Retype password"/>
             <#if passwordError??>
                       <div class="invalid-feedback">
                           ${passwordError}
@@ -41,6 +41,6 @@
             </div>
         </div>
     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-    <button class="btn btn-primary" type="submit">Save</button>
+    <button class="btn btn-primary" type="submit">Сохранить</button>
 </form>
 </@c.page>

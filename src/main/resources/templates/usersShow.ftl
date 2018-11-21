@@ -1,6 +1,7 @@
 <#import "parts/common.ftl" as c>
 <@c.page>
-<H5>Список пользователей</H5>
+<H5>Список обучающихся</H5>
+<br>
 <table class="table html-editor-align-left" style="width: 50%">
     <thead>
     <tr>

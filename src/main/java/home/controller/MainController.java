@@ -45,70 +45,75 @@ public class MainController {
             return "greeting";
             }
 
-        @GetMapping("/main")
-        public String main(@RequestParam(required = false, defaultValue = "") String filter,
-                           @RequestParam(required = false, defaultValue = "") String selectFilter,
+        @GetMapping("/main/{user}")
+        public String main(
+                @PathVariable User user,
+                @RequestParam(required = false, defaultValue = "") String filter,
+                @RequestParam(required = false, defaultValue = "") String selectFilter,
                            Model model){
 
-            findService.find(filter, selectFilter);
-            Iterable<Testing> testings = findService.getTestings();
+            if (user.getTestResults().size() != 0) {
+                boolean chkUsr = true;
+                model.addAttribute("chkUsr", chkUsr);
+                return "main";
+            } else {
+                findService.find(filter, selectFilter);
+                Iterable<Testing> testings = findService.getTestings();
 
-            model.addAttribute("testings", testings);
-            model.addAttribute("filter", filter);
-            model.addAttribute("selectFilter", selectFilter);
+                model.addAttribute("testings", testings);
+                model.addAttribute("filter", filter);
+                model.addAttribute("selectFilter", selectFilter);
 
-            return "main";
+                return "main";
             }
+        }
 
-        @PostMapping("text/{user}")
+        @PostMapping("main/test/{user}")
         public String add(
                 @AuthenticationPrincipal User currentUser,
                 @PathVariable User user,
                 @Valid TestResult testResult,
-                @NotNull(message = "1111111111111")@RequestParam(value="1") String rbutton1,
-                @NotNull(message = "1111111111111")@RequestParam(value="2") String rbutton2,
-                @NotNull(message = "1111111111111")@RequestParam(value="3") String rbutton3,
-                @NotNull(message = "1111111111111")@RequestParam(value="4") String rbutton4,
-                @NotNull(message = "1111111111111")@RequestParam(value="5") String rbutton5,
+                @RequestParam(value="1") String rbutton1, @RequestParam(value="2") String rbutton2, @RequestParam(value="3") String rbutton3,
+                @RequestParam(value="4") String rbutton4, @RequestParam(value="5") String rbutton5, @RequestParam(value="6") String rbutton6,
+                @RequestParam(value="7") String rbutton7, @RequestParam(value="8") String rbutton8, @RequestParam(value="9") String rbutton9,
+                @RequestParam(value="10") String rbutton10, @RequestParam(value="11") String rbutton11,
                 BindingResult bindingResult,
                 Model model
                 ){
 
-            if(bindingResult.hasErrors()) {
-                Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-                model.mergeAttributes(errorsMap);
-                model.addAttribute("testResult", testResult);
-            } else {
-                if (user.getTestResults().size() == 0) {
-                    String[] rbuttonList = {rbutton1, rbutton2, rbutton3, rbutton4, rbutton5};
-
-                    for (int i = 0, j = 1 ; i < rbuttonList.length; i++, j++) {
-
-                        if (rbuttonList[i].equals("1")) {
-                            testResult = new TestResult(true, currentUser, j, testingRepo.findQuest(j));
-                        } else if (rbuttonList[i].equals("2")) {
-                            testResult = new TestResult(false, currentUser, j, testingRepo.findQuest(j));
-                        } else { boolean chkBtn = true;
-                            model.addAttribute("chkBtn", chkBtn); }
-
-                        testResultRepo.save(testResult);
-                    }
-
-                    model.addAttribute("testResult", null);
-
+                if (bindingResult.hasErrors()) {
+                    Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+                    model.mergeAttributes(errorsMap);
+                    model.addAttribute("testResult", testResult);
                 } else {
-                    boolean chkUsr = true;
-                    model.addAttribute("chkUsr", chkUsr);
+                        String[] rbuttonList = {rbutton1, rbutton2, rbutton3, rbutton4, rbutton5, rbutton6, rbutton7, rbutton8, rbutton9,
+                                rbutton10, rbutton11};
+
+                        for (int i = 0, j = 1; i < rbuttonList.length; i++, j++) {
+
+                            if (rbuttonList[i].equals("1")) {
+                                testResult = new TestResult(true, currentUser, j, testingRepo.findQuest(j), testingRepo.findChckQuest(j));
+                            } else if (rbuttonList[i].equals("2")) {
+                                testResult = new TestResult(false, currentUser, j, testingRepo.findQuest(j), testingRepo.findChckQuest(j));
+                            } else {
+                                boolean chkBtn = true;
+                                model.addAttribute("chkBtn", chkBtn);
+                            }
+
+                            testResultRepo.save(testResult);
+                        }
+
+                        model.addAttribute("testResult", null);
+
                 }
-            }
 
-            Iterable<Testing> testings = testingRepo.findAll();
-            model.addAttribute("testings", testings);
+                Iterable<Testing> testings = testingRepo.findAll();
+                model.addAttribute("testings", testings);
 
-            Iterable<TestResult> testResults = testResultRepo.findAll();
-            model.addAttribute("testResults", testResults);
+                Iterable<TestResult> testResults = testResultRepo.findAll();
+                model.addAttribute("testResults", testResults);
 
-            return "main";
+            return "redirect:/user-testing/{user}";
         }
 
         @GetMapping("/user-testing/{user}")
@@ -130,7 +135,7 @@ public class MainController {
     public String userShow(
             Model model){
 
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users", userService.findUser());
 
         return "usersShow";
     }

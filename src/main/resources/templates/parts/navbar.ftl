@@ -14,7 +14,7 @@
             <#if isUser>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/main">Testing</a>
+                <a class="nav-link" href="/main/${currentUserId}">Testing</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/user-testing/${currentUserId}">My tests</a>
