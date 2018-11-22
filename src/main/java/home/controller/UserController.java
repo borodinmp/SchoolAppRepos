@@ -43,11 +43,11 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public String userSave(
-        @RequestParam String username,
-        @RequestParam Map<String, String> form,
-        @RequestParam ("userid") User user
-    ){
-        userService.saveUser(user,username,form);
+            @RequestParam String username,
+            @RequestParam Map<String, String> form,
+            @RequestParam("userid") User user
+    ) {
+        userService.saveUser(user, username, form);
 
         return "redirect:/user";
     }
@@ -56,9 +56,10 @@ public class UserController {
     public String getProfile(
             Model model,
             @AuthenticationPrincipal User user) {
-    model.addAttribute("username", user.getUsername());
-    model.addAttribute("fullname", user.getFullName());
-    return "profile";
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("fullname", user.getFullName());
+
+        return "profile";
     }
 
     @PostMapping("profile")
@@ -68,7 +69,7 @@ public class UserController {
             @RequestParam("password2") String passwordConfirm,
             @RequestParam("fullName") String fullName,
             Model model
-            ) {
+    ) {
 
         model.addAttribute("username", user.getUsername());
         model.addAttribute("fullname", user.getFullName());
@@ -77,13 +78,11 @@ public class UserController {
             model.addAttribute("fullNameError", "Пожалуйста, введите фамилию, имя и отчество");
             return "profile";
         }
-
         if (password.isEmpty() || !password.equals(passwordConfirm)) {
             model.addAttribute("passwordError", "Пароли не совпадают либо не введены");
             return "profile";
         }
-            userService.updateProfile(user, password, fullName);
-            return "redirect:/user/profile";
-
+        userService.updateProfile(user, password, fullName);
+        return "redirect:/user/profile";
     }
 }

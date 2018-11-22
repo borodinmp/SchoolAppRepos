@@ -1,11 +1,11 @@
 <#include "parts/security.ftl">
 <#import "parts/common.ftl" as c>
 <@c.page>
-<#if isCurrentUser>
+    <#if isCurrentUser>
 <div>
     <form method="post" action="text" enctype="multipart/form-data">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <table class="table mx-auto" >
+        <table class="table mx-auto">
             <thead>
             <tr>
                 <th>ID</th>
@@ -30,5 +30,5 @@
         </table>
     </form>
 </div>
-</#if>
+    </#if>
 </@c.page>

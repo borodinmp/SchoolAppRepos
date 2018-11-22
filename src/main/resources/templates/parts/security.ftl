@@ -1,15 +1,15 @@
 <#assign
-    known = Session.SPRING_SECURITY_CONTEXT??
+known = Session.SPRING_SECURITY_CONTEXT??
 >
 
 <#if known>
     <#assign
-        user = Session.SPRING_SECURITY_CONTEXT.authentication.principal
-        name = user.getUsername()
-        isAdmin = user.isAdmin()
-        isUser = user.isUser()
-        isTeacher = user.isTeacher()
-        currentUserId = user.getId()
+    user = Session.SPRING_SECURITY_CONTEXT.authentication.principal
+    name = user.getUsername()
+    isAdmin = user.isAdmin()
+    isUser = user.isUser()
+    isTeacher = user.isTeacher()
+    currentUserId = user.getId()
     >
 <#else>
     <#assign

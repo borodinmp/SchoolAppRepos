@@ -12,7 +12,7 @@ public class TestResult {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull (message = "Установите значение поля")
+    @NotNull(message = "Установите значение поля")
     private boolean answer;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -25,15 +25,16 @@ public class TestResult {
 
     private boolean checkQuest;
 
-    public TestResult(){
+    public TestResult() {
 
     }
-    public TestResult(boolean answer, User author, long question_id, String quest, boolean checkQuest){
-    this.answer = answer;
-    this.author = author;
-    this.question_id = question_id;
-    this.quest = quest;
-    this.checkQuest = checkQuest;
+
+    public TestResult(boolean answer, User author, long question_id, String quest, boolean checkQuest) {
+        this.answer = answer;
+        this.author = author;
+        this.question_id = question_id;
+        this.quest = quest;
+        this.checkQuest = checkQuest;
     }
 
     public Long getId() {

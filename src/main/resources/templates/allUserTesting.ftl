@@ -1,12 +1,12 @@
 <#include "parts/security.ftl">
 <#import "parts/common.ftl" as c>
 <@c.page>
-<#if isTeacher>
+    <#if isTeacher>
 <div>
     <div><H5>${fullName}</H5></div>
     <br>
     <form method="post" action="text">
-        <table class="table mx-auto" style="width: 90%; " >
+        <table class="table mx-auto" style="width: 90%; ">
             <thead>
             <tr>
                 <th>№</th>
@@ -36,5 +36,5 @@
         </table>
     </form>
 </div>
-</#if>
+    </#if>
 </@c.page>

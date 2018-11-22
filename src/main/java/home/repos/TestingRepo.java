@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Collection;
 import java.util.List;
 
-public interface TestingRepo extends CrudRepository<Testing, Long>{
+public interface TestingRepo extends CrudRepository<Testing, Long> {
 
     List<Testing> findByQuestion(String filter);
 

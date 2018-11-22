@@ -16,14 +16,8 @@ public class FindService {
     @Autowired
     private TestingRepo testingRepo;
 
-    public Iterable find (String filter, String selectFilter) {
-
-        if(filter != null & !filter.isEmpty() & selectFilter.equals("2")) {
-            testings = testingRepo.
-                    findByQuestion(filter);
-
-        } else testings = testingRepo.findAll();
-
+    public Iterable find() {
+        testings = testingRepo.findAll();
         return testings;
     }
 

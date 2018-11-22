@@ -51,11 +51,11 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public List <User> findAll() {
+    public List<User> findAll() {
         return userRepo.findAll();
     }
 
-    public List <User> findUser() {
+    public List<User> findUser() {
         return userRepo.findByUserRole();
     }
 
@@ -79,11 +79,11 @@ public class UserService implements UserDetailsService {
 
     public void updateProfile(User user, String password, String fullName) {
 
-       if (!StringUtils.isEmpty(password)) {
-           user.setPassword(passwordEncoder.encode(password));
-           user.setFullName(fullName);
-       }
-       userRepo.save(user);
+        if (!StringUtils.isEmpty(password)) {
+            user.setPassword(passwordEncoder.encode(password));
+            user.setFullName(fullName);
+        }
+        userRepo.save(user);
 
     }
 

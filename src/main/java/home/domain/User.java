@@ -35,7 +35,7 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List <TestResult> testResults;
+    private List<TestResult> testResults;
 
     @Override
     public boolean equals(Object o) {
@@ -50,16 +50,17 @@ public class User implements UserDetails {
         return Objects.hash(id);
     }
 
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
     }
 
-    public boolean isTeacher(){
+    public boolean isTeacher() {
         return roles.contains(Role.TEACHER);
     }
 
-    public boolean isUser(){
-        return roles.contains(Role.USER);}
+    public boolean isUser() {
+        return roles.contains(Role.USER);
+    }
 
     @Override
     public boolean isAccountNonExpired() {

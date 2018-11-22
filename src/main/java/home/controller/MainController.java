@@ -5,135 +5,122 @@ import home.domain.Testing;
 import home.domain.User;
 import home.repos.TestResultRepo;
 import home.repos.TestingRepo;
-import home.repos.UserRepo;
 import home.service.FindService;
 import home.service.UserService;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainController {
 
-        @Autowired
-        FindService findService;
+    @Autowired
+    FindService findService;
 
-        @Autowired
-        private TestResultRepo testResultRepo;
+    @Autowired
+    private TestResultRepo testResultRepo;
 
-        @Autowired
-        private TestingRepo testingRepo;
+    @Autowired
+    private TestingRepo testingRepo;
 
-        @Autowired
-        private UserRepo userRepo;
 
-        @Autowired
-        private UserService userService;
+    @Autowired
+    private UserService userService;
 
-        @GetMapping("/")
-        public String greeting() {
-            return "greeting";
-            }
+    @GetMapping("/")
+    public String greeting() {
+        return "greeting";
+    }
 
-        @GetMapping("/main/{user}")
-        public String main(
-                @PathVariable User user,
-                @RequestParam(required = false, defaultValue = "") String filter,
-                @RequestParam(required = false, defaultValue = "") String selectFilter,
-                           Model model){
+    @GetMapping("/main/{user}")
+    public String main(
+            @PathVariable User user,
+            Model model) {
 
-            if (user.getTestResults().size() != 0) {
-                boolean chkUsr = true;
-                model.addAttribute("chkUsr", chkUsr);
-                return "main";
-            } else {
-                findService.find(filter, selectFilter);
-                Iterable<Testing> testings = findService.getTestings();
+        if (user.getTestResults().size() != 0) {
+            boolean chkUsr = true;
+            model.addAttribute("chkUsr", chkUsr);
+            return "main";
+        } else {
+            findService.find();
+            Iterable<Testing> testings = findService.getTestings();
+            model.addAttribute("testings", testings);
 
-                model.addAttribute("testings", testings);
-                model.addAttribute("filter", filter);
-                model.addAttribute("selectFilter", selectFilter);
-
-                return "main";
-            }
+            return "main";
         }
+    }
+    @PostMapping("main/test/{user}")
+    public String add(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user,
+            @Valid TestResult testResult,
+            @RequestParam("1") String r1,
+            @RequestParam("2") String r2,
+            @RequestParam("3") String r3,
+            @RequestParam("4") String r4,
+            @RequestParam("5") String r5,
+            @RequestParam("6") String r6,
+            BindingResult bindingResult,
+            Model model
+    ) {
 
-        @PostMapping("main/test/{user}")
-        public String add(
-                @AuthenticationPrincipal User currentUser,
-                @PathVariable User user,
-                @Valid TestResult testResult,
-                @RequestParam(value="1") String rbutton1, @RequestParam(value="2") String rbutton2, @RequestParam(value="3") String rbutton3,
-                @RequestParam(value="4") String rbutton4, @RequestParam(value="5") String rbutton5, @RequestParam(value="6") String rbutton6,
-                @RequestParam(value="7") String rbutton7, @RequestParam(value="8") String rbutton8, @RequestParam(value="9") String rbutton9,
-                @RequestParam(value="10") String rbutton10, @RequestParam(value="11") String rbutton11,
-                BindingResult bindingResult,
-                Model model
-                ){
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("testResult", testResult);
+        } else {
+            String[] rbuttonList = {r1, r2, r3, r4, r5, r6};
 
-                if (bindingResult.hasErrors()) {
-                    Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-                    model.mergeAttributes(errorsMap);
-                    model.addAttribute("testResult", testResult);
-                } else {
-                        String[] rbuttonList = {rbutton1, rbutton2, rbutton3, rbutton4, rbutton5, rbutton6, rbutton7, rbutton8, rbutton9,
-                                rbutton10, rbutton11};
+            for (int i = 0, j = 1; i < rbuttonList.length; i++, j++) {
 
-                        for (int i = 0, j = 1; i < rbuttonList.length; i++, j++) {
-
-                            if (rbuttonList[i].equals("1")) {
-                                testResult = new TestResult(true, currentUser, j, testingRepo.findQuest(j), testingRepo.findChckQuest(j));
-                            } else if (rbuttonList[i].equals("2")) {
-                                testResult = new TestResult(false, currentUser, j, testingRepo.findQuest(j), testingRepo.findChckQuest(j));
-                            } else {
-                                boolean chkBtn = true;
-                                model.addAttribute("chkBtn", chkBtn);
-                            }
-
-                            testResultRepo.save(testResult);
-                        }
-
-                        model.addAttribute("testResult", null);
-
+                if (rbuttonList[i].equals("1")) {
+                    testResult = new TestResult(true, currentUser, j, testingRepo.findQuest(j), testingRepo.findChckQuest(j));
                 }
-
-                Iterable<Testing> testings = testingRepo.findAll();
-                model.addAttribute("testings", testings);
-
-                Iterable<TestResult> testResults = testResultRepo.findAll();
-                model.addAttribute("testResults", testResults);
-
-            return "redirect:/user-testing/{user}";
+                if (rbuttonList[i].equals("2")) {
+                    testResult = new TestResult(false, currentUser, j, testingRepo.findQuest(j), testingRepo.findChckQuest(j));
+                } else {
+                    model.addAttribute("btnError", "Не вся информация введена");
+                }
+                testResultRepo.save(testResult);
+            }
+            model.addAttribute("testResult", null);
         }
 
-        @GetMapping("/user-testing/{user}")
-        public String userTestings(
-                @AuthenticationPrincipal User currentUser,
-                @PathVariable User user,
-                Model model){
+        return "redirect:/user-testing/{user}";
+    }
 
-            List<TestResult> testResults = user.getTestResults();
+    @GetMapping("/user-testing/{user}")
+    public String userTestings(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user,
+            Model model) {
 
-            model.addAttribute("testResults", testResults);
-            model.addAttribute("isCurrentUser", currentUser.equals(user));
+        List<TestResult> testResults = user.getTestResults();
 
-            return "userTesting";
-        }
+        model.addAttribute("testResults", testResults);
+        model.addAttribute("isCurrentUser", currentUser.equals(user));
+
+        return "userTesting";
+    }
 
     @GetMapping("/users-show")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
     public String userShow(
-            Model model){
+            Model model) {
 
         model.addAttribute("users", userService.findUser());
 
@@ -144,7 +131,7 @@ public class MainController {
     public String teacherPanel(
             @AuthenticationPrincipal User currentUser,
             @PathVariable User user,
-            Model model){
+            Model model) {
 
         List<TestResult> testResults = user.getTestResults();
 
@@ -154,44 +141,16 @@ public class MainController {
         return "allUserTesting";
     }
 
-/*        @PostMapping("/user-testing/{user}")
-        public String updateTestings(
-                @AuthenticationPrincipal User currentUser,
-                @PathVariable Long user,
-                @RequestParam("id") Testing testing,
-                @RequestParam("question") String question,
-                @RequestParam("rbutton") String rbutton){
+    @PostMapping("delete")
+    @Transactional
+    public String delete(@RequestParam Long id, Map<String, Object> model) {
 
-            if (testing.getAuthor().equals(currentUser)) {
-                if (!StringUtils.isEmpty(question)) {
-                    testing.setQuestion(question);
-                }
+        Iterable<Testing> testings;
 
-                if (!StringUtils.isEmpty(rbutton)) {
-                    if (rbutton.equals(1)){
-                        testResult.setAnswer(true);
-                    }
-                    else if (rbutton.equals(2)){
-                        testResult.setAnswer(false);
-                    }
-                }
-
-                testingRepo.save(testing);
-            }
-
-            return "redirect:/user-testing/" + user;
-        }*/
-
-        @PostMapping("delete")
-        @Transactional
-        public String delete(@RequestParam Long id, Map<String,Object> model) {
-
-            Iterable<Testing> testings;
-
-            testingRepo.deleteById(id);
-            testings = testingRepo.findAll();
-            model.put("testings", testings);
-            return "main";
-            }
-
+        testingRepo.deleteById(id);
+        testings = testingRepo.findAll();
+        model.put("testings", testings);
+        return "main";
     }
+
+}
