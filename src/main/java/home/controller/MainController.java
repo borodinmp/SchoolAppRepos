@@ -13,17 +13,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class MainController {
@@ -68,21 +64,9 @@ public class MainController {
             @AuthenticationPrincipal User currentUser,
             @PathVariable User user,
             @Valid TestResult testResult,
-            @RequestParam("1") String r1,
-            @RequestParam("2") String r2,
-            @RequestParam("3") String r3,
-            @RequestParam("4") String r4,
-            @RequestParam("5") String r5,
-            @RequestParam("6") String r6,
-            BindingResult bindingResult,
-            Model model
-    ) {
-
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-            model.mergeAttributes(errorsMap);
-            model.addAttribute("testResult", testResult);
-        } else {
+            @RequestParam("1") String r1, @RequestParam("2") String r2, @RequestParam("3") String r3,
+            @RequestParam("4") String r4, @RequestParam("5") String r5, @RequestParam("6") String r6,
+            Model model){
             String[] rbuttonList = {r1, r2, r3, r4, r5, r6};
 
             for (int i = 0, j = 1; i < rbuttonList.length; i++, j++) {
@@ -92,14 +76,9 @@ public class MainController {
                 }
                 if (rbuttonList[i].equals("2")) {
                     testResult = new TestResult(false, currentUser, j, testingRepo.findQuest(j), testingRepo.findChckQuest(j));
-                } else {
-                    model.addAttribute("btnError", "Не вся информация введена");
                 }
                 testResultRepo.save(testResult);
             }
-            model.addAttribute("testResult", null);
-        }
-
         return "redirect:/user-testing/{user}";
     }
 
@@ -141,16 +120,16 @@ public class MainController {
         return "allUserTesting";
     }
 
-    @PostMapping("delete")
+    @PostMapping("/delete/{user}")
     @Transactional
-    public String delete(@RequestParam Long id, Map<String, Object> model) {
+    public String delete(
+            @PathVariable User user,
+            Model model) {
 
-        Iterable<Testing> testings;
+        testResultRepo.deleteAllByAuthor(user);
+        model.addAttribute("users", userService.findUser());
 
-        testingRepo.deleteById(id);
-        testings = testingRepo.findAll();
-        model.put("testings", testings);
-        return "main";
+        return "usersShow";
     }
 
 }

@@ -22,9 +22,8 @@
             <td>${testing.id}</td>
             <td>${testing.question}</td>
             <td>
-                    <input type="radio" name="${testing.id}" value="1">Да
-                    <input type="radio" name="${testing.id}" value="2">Нет
-                </div>
+                    <input type="radio" name="${testing.id}" value="1" required>Да
+                    <input type="radio" name="${testing.id}" value="2" required>Нет
             </td>
         </tr>
         </tbody>
